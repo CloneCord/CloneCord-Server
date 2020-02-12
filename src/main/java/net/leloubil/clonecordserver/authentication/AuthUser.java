@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
@@ -16,10 +17,12 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthUser {
 
+    @Id
+    UUID uuid;
+
     String username;
 
     String password;
 
-    UUID uuid;
 
 }
