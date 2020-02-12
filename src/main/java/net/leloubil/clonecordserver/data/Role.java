@@ -1,26 +1,32 @@
 package net.leloubil.clonecordserver.data;
 
 
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.UUID;
 
 /**
  * This class represent a Role in a Guild
  * */
+@Data
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
 
-    @Getter
-    private UUID uuid;
+    @Id
+    UUID id;
 
-    @Getter
-    private String name;
+    @Indexed
+    String name;
 
-    @Getter
-    private String displayName;
+    String displayName;
 
-    @Getter
-    private String hexColor;
-
+    String hexColor;
 
 }

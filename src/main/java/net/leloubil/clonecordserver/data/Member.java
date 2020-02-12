@@ -1,19 +1,32 @@
 package net.leloubil.clonecordserver.data;
 
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
- /**
- * This class represent an user in a Guild
-  * This isn't an {@link User}
- */
+import java.util.UUID;
 
+/**
+* This class represent an user in a Guild
+ * This isn't an {@link User}
+*/
+
+@Data
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Member {
 
-    @Getter
-    private String name;
+    @Id
+    UUID id;
 
-    @Getter
-    private List<Role> roles;
+    @Indexed
+    String name;
+
+    List<Role> roles;
 
 }
