@@ -40,6 +40,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,SIGN_UP_URL).permitAll()
                 // spring health endpoints
                 .antMatchers("/actuator/*").permitAll()
+                // swagger
+                .antMatchers("/v2/api-docs").permitAll()
+                // swagger ui
+                .antMatchers("/swagger-resources").permitAll()
+                .antMatchers("/swagger-resources/**/*").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/webjars/**/*").permitAll()
                 //everything else needs to be logged in
                 .anyRequest().authenticated()
                 .and()
