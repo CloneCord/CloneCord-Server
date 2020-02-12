@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
  /**
  * This class represent an user in a Guild
-  * This isn't a {@link User}
+  * This isn't an {@link User}
  */
 
 public class Member {
