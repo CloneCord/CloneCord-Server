@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class ClonecordserverApplication {
+public class ClonecordServerApplication {
 
     /**
      * Implementation of the passwordEncoder
@@ -19,7 +19,7 @@ public class ClonecordserverApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ClonecordserverApplication.class, args);
+        SpringApplication.run(ClonecordServerApplication.class, args);
     }
 
 }
