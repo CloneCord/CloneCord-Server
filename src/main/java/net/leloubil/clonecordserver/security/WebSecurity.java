@@ -37,7 +37,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 //allow sign up url
-                .antMatchers(HttpMethod.POST,SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.POST,"/auth/*").permitAll()
                 // spring health endpoints
                 .antMatchers("/actuator/*").permitAll()
                 // swagger
@@ -51,13 +51,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 //Filter to create JWT on successfull login
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(getJWTAuthenticationFilter())
 
                 //Filter to make sure JWT is valid
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
 
                 //No session since we use JWT
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    private JWTAuthenticationFilter getJWTAuthenticationFilter() throws Exception {
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
+        jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
+        return jwtAuthenticationFilter;
     }
 
     @Override
