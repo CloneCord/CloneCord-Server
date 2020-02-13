@@ -28,6 +28,11 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
+    public Optional<LoginUser> getLoginUserById(UUID id) {
+        return LoginUserRepository.findById(id);
+    }
+
+    @Override
     public boolean existsLoginUserByEmailAndPassword(String email, String password) {
         return LoginUserRepository.existsByEmailAndPassword(email,password);
     }

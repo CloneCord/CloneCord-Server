@@ -2,6 +2,8 @@ package net.leloubil.clonecordserver.authentication.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.services.LoginUserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
 
 import static net.leloubil.clonecordserver.security.SecurityConstants.TOKEN_PREFIX;
 import static net.leloubil.clonecordserver.security.SecurityConstants.HEADER_STRING;
@@ -23,8 +27,11 @@ import static net.leloubil.clonecordserver.security.SecurityConstants.SECRET;
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final LoginUserService loginUserService;
+
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, LoginUserService loginUserService) {
         super(authenticationManager);
+        this.loginUserService = loginUserService;
     }
 
     @Override
@@ -51,15 +58,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
-        String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
+        String userId = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
                 .build()
                 .verify(token.replace(TOKEN_PREFIX,""))
                 .getSubject();
 
-        if (user == null){
+        if (userId == null){
             return null;
         }
-
-        return new UsernamePasswordAuthenticationToken(user,null,new ArrayList<>());
+        Optional<LoginUser> user = loginUserService.getLoginUserById(UUID.fromString(userId));
+        return new UsernamePasswordAuthenticationToken(user.orElse(null),null,new ArrayList<>());
     }
 }

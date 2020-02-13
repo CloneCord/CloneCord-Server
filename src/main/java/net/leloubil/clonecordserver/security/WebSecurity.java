@@ -55,7 +55,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .addFilter(getJWTAuthenticationFilter())
 
                 //Filter to make sure JWT is valid
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), loginUserService))
 
                 //No session since we use JWT
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

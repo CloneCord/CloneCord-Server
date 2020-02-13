@@ -11,6 +11,8 @@ public interface LoginUserService {
 
     Optional<LoginUser> getLoginUserByEmail(String email);
 
+    Optional<LoginUser> getLoginUserById(UUID id);
+
     boolean existsLoginUserByEmailAndPassword(String email, String password);
 
     LoginUser updateLoginUser(LoginUser loginUser);
