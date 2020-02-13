@@ -51,4 +51,13 @@ public class LoginUserServiceImpl implements LoginUserService {
     public void deleteLoginUser(LoginUser loginUser) {
         LoginUserRepository.delete(loginUser);
     }
+
+    @Override
+    public boolean isUnique(String email, LoginUser self) {
+        Optional<LoginUser> optionalLoginUser = LoginUserRepository.findByEmail(email);
+        if(optionalLoginUser.isEmpty()){
+            return true;
+        }
+        return optionalLoginUser.get().getUuid() == self.getUuid();
+    }
 }

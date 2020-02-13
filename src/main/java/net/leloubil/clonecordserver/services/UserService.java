@@ -6,7 +6,7 @@ import net.leloubil.clonecordserver.data.User;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserService {
+public interface UserService extends UniqueProof<String,User> {
 
     User createUser(RegistrationUser userData);
 

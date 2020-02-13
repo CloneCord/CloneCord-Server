@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
+import net.leloubil.clonecordserver.data.LoginUser;
 import net.leloubil.clonecordserver.data.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.persistence.UserRepository;
@@ -55,5 +56,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public boolean isUnique(String username, User self) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()){
+            return true;
+        }
+        return optionalUser.get().getId() == self.getId();
     }
 }
