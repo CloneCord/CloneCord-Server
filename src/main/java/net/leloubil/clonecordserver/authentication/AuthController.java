@@ -1,6 +1,8 @@
 package net.leloubil.clonecordserver.authentication;
 
 
+import net.leloubil.clonecordserver.data.RegistrationUser;
+import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.services.LoginUserService;
 import net.leloubil.clonecordserver.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,16 +21,16 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(LoginUserService LoginUserService, UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
 
     @PostMapping("/register")
-    public void signUp(@Validated @RequestBody RegistrationUser authData){
+    public @ResponseBody User signUp(@Validated @RequestBody RegistrationUser authData){
         authData.setPassword(passwordEncoder.encode(authData.getPassword()));
-        userService.createUser(authData);
+        return userService.createUser(authData);
     }
 
 

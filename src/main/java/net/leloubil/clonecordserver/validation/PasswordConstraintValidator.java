@@ -1,12 +1,10 @@
 package net.leloubil.clonecordserver.validation;
 
 import com.google.common.base.Joiner;
-import net.leloubil.clonecordserver.authentication.ValidPassword;
 import org.passay.*;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword,String> {

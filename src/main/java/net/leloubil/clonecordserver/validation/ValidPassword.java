@@ -1,4 +1,4 @@
-package net.leloubil.clonecordserver.authentication;
+package net.leloubil.clonecordserver.validation;
 
 import net.leloubil.clonecordserver.validation.PasswordConstraintValidator;
 

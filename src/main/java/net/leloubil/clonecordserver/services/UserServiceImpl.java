@@ -1,6 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.authentication.RegistrationUser;
+import net.leloubil.clonecordserver.data.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.persistence.UserRepository;
 import org.springframework.stereotype.Component;

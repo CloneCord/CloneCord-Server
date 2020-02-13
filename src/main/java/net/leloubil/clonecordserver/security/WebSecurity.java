@@ -1,7 +1,8 @@
 package net.leloubil.clonecordserver.security;
 
-import net.leloubil.clonecordserver.authentication.JWTAuthenticationFilter;
-import net.leloubil.clonecordserver.authentication.JWTAuthorizationFilter;
+import net.leloubil.clonecordserver.authentication.filters.JWTAuthenticationFilter;
+import net.leloubil.clonecordserver.authentication.filters.JWTAuthorizationFilter;
+import net.leloubil.clonecordserver.services.LoginUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,8 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static net.leloubil.clonecordserver.security.SecurityConstants.SIGN_UP_URL;
-
 /**
  * Configuration for the spring security module
  */
@@ -25,10 +24,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 
     private UserDetailsServiceImpl userDetailsService;
+    private LoginUserService loginUserService;
     private PasswordEncoder passwordEncoder;
 
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, LoginUserService loginUserService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.loginUserService = loginUserService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -61,7 +62,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private JWTAuthenticationFilter getJWTAuthenticationFilter() throws Exception {
-        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), loginUserService);
         jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         return jwtAuthenticationFilter;
     }

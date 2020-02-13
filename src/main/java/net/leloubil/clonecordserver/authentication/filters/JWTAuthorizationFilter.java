@@ -1,4 +1,4 @@
-package net.leloubil.clonecordserver.authentication;
+package net.leloubil.clonecordserver.authentication.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

@@ -1,6 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.authentication.LoginUser;
+import net.leloubil.clonecordserver.data.LoginUser;
 
 import java.util.Optional;
 import java.util.UUID;
