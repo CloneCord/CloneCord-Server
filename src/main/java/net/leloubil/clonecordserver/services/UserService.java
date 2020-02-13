@@ -1,6 +1,5 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.authentication.AuthUser;
 import net.leloubil.clonecordserver.authentication.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 

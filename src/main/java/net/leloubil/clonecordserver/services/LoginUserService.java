@@ -1,0 +1,22 @@
+package net.leloubil.clonecordserver.services;
+
+import net.leloubil.clonecordserver.authentication.LoginUser;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface LoginUserService {
+
+    LoginUser createLoginUser(LoginUser loginUser);
+
+    Optional<LoginUser> getLoginUserByEmail(String email);
+
+    boolean existsLoginUserByEmailAndPassword(String email, String password);
+
+    LoginUser updateLoginUser(LoginUser loginUser);
+
+    void deleteLoginUserById(UUID uuid);
+
+    void deleteLoginUser(LoginUser loginUser);
+
+}

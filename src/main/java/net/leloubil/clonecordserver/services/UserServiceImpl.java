@@ -1,9 +1,7 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.authentication.AuthUser;
 import net.leloubil.clonecordserver.authentication.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
-import net.leloubil.clonecordserver.persistence.AuthUserRepository;
 import net.leloubil.clonecordserver.persistence.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +13,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final AuthUserService authUserService;
+    private final LoginUserService LoginUserService;
 
-    public UserServiceImpl(UserRepository userRepository, AuthUserService authUserService) {
+    public UserServiceImpl(UserRepository userRepository, LoginUserService LoginUserService) {
         this.userRepository = userRepository;
-        this.authUserService = authUserService;
+        this.LoginUserService = LoginUserService;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class UserServiceImpl implements UserService {
                 .username(userData.getUsername())
                 .build();
         userData.setUuid(uuid);
-        authUserService.createAuthUser(userData);
+        LoginUserService.createLoginUser(userData);
         return userRepository.save(u);
     }
 

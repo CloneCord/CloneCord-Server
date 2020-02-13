@@ -1,7 +1,7 @@
 package net.leloubil.clonecordserver.authentication;
 
 
-import net.leloubil.clonecordserver.services.AuthUserService;
+import net.leloubil.clonecordserver.services.LoginUserService;
 import net.leloubil.clonecordserver.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +19,7 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthUserService authUserService, UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(LoginUserService LoginUserService, UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }

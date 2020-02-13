@@ -33,7 +33,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try{
-            AuthUser credentials = new ObjectMapper().readValue(request.getInputStream(),AuthUser.class); //read credentials
+            LoginUser credentials = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class); //read credentials
 
             //try authentication using spring auth module
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getEmail(),credentials.getPassword(),new ArrayList<>()));

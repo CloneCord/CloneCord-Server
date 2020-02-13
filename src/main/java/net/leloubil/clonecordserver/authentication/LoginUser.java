@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,7 +18,8 @@ import java.util.UUID;
  */
 @Data @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthUser {
+@Document("LoginUsers")
+public class LoginUser {
 
     @Id
     UUID uuid;

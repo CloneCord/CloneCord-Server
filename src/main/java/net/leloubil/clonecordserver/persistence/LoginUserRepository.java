@@ -1,6 +1,6 @@
 package net.leloubil.clonecordserver.persistence;
 
-import net.leloubil.clonecordserver.authentication.AuthUser;
+import net.leloubil.clonecordserver.authentication.LoginUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,11 +8,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AuthUserRepository extends MongoRepository<AuthUser, UUID> {
+public interface LoginUserRepository extends MongoRepository<LoginUser, UUID> {
 
-    Optional<AuthUser> findByEmail(String email);
+    Optional<LoginUser> findByEmail(String email);
 
-    Optional<AuthUser> findByEmailAndPassword(String email, String password);
+    Optional<LoginUser> findByEmailAndPassword(String email, String password);
 
     boolean existsByEmailAndPassword(String username, String password);
 
