@@ -1,6 +1,7 @@
 package net.leloubil.clonecordserver.services;
 
 import net.leloubil.clonecordserver.authentication.AuthUser;
+import net.leloubil.clonecordserver.authentication.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.persistence.AuthUserRepository;
 import net.leloubil.clonecordserver.persistence.UserRepository;
@@ -22,12 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(AuthUser userData) {
+    public User createUser(RegistrationUser userData) {
         UUID uuid = UUID.randomUUID();
         User u = User.builder()
                 .id(uuid)
                 .username(userData.getUsername())
-                .displayName(userData.getUsername())
                 .build();
         userData.setUuid(uuid);
         authUserService.createAuthUser(userData);

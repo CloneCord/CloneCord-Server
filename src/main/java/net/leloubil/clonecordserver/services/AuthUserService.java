@@ -9,9 +9,9 @@ public interface AuthUserService {
 
     AuthUser createAuthUser(AuthUser authUser);
 
-    Optional<AuthUser> getAuthUserByUsername(String username);
+    Optional<AuthUser> getAuthUserByEmail(String email);
 
-    boolean existsAuthUserByUsernameAndPassword(String username, String password);
+    boolean existsAuthUserByEmailAndPassword(String email, String password);
 
     AuthUser updateAuthUser(AuthUser authUser);
 

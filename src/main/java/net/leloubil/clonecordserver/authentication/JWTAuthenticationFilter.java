@@ -36,7 +36,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             AuthUser credentials = new ObjectMapper().readValue(request.getInputStream(),AuthUser.class); //read credentials
 
             //try authentication using spring auth module
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getUsername(),credentials.getPassword(),new ArrayList<>()));
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getEmail(),credentials.getPassword(),new ArrayList<>()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

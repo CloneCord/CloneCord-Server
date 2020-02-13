@@ -1,6 +1,7 @@
 package net.leloubil.clonecordserver.services;
 
 import net.leloubil.clonecordserver.authentication.AuthUser;
+import net.leloubil.clonecordserver.authentication.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    User createUser(AuthUser userData);
+    User createUser(RegistrationUser userData);
 
     Optional<User> getUser(UUID userId);
 

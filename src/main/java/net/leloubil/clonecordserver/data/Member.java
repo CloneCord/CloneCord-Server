@@ -25,7 +25,7 @@ public class Member {
     UUID id;
 
     @Indexed
-    String name;
+    String username;
 
     List<Role> roles;
 

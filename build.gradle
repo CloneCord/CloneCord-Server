@@ -34,7 +34,15 @@ dependencies {
     compile "io.springfox:springfox-swagger-ui:2.9.2"
     compile "io.swagger:swagger-annotations:1.5.21"
     compile "io.swagger:swagger-models:1.5.21"
+    //validation
+    compile "org.passay:passay:1.5.0"
+
+
+    //test stuff
+
+    //test mongo
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    //test spring
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

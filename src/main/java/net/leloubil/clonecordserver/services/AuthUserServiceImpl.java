@@ -23,13 +23,13 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public Optional<AuthUser> getAuthUserByUsername(String username) {
-        return authUserRepository.findByUsername(username);
+    public Optional<AuthUser> getAuthUserByEmail(String email) {
+        return authUserRepository.findByEmail(email);
     }
 
     @Override
-    public boolean existsAuthUserByUsernameAndPassword(String username, String password) {
-        return authUserRepository.existsByUsernameAndPassword(username,password);
+    public boolean existsAuthUserByEmailAndPassword(String email, String password) {
+        return authUserRepository.existsByEmailAndPassword(email,password);
     }
 
     @Override

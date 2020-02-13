@@ -10,10 +10,10 @@ import java.util.UUID;
 @Repository
 public interface AuthUserRepository extends MongoRepository<AuthUser, UUID> {
 
-    Optional<AuthUser> findByUsername(String username);
+    Optional<AuthUser> findByEmail(String email);
 
-    Optional<AuthUser> findByUsernameAndPassword(String username, String password);
+    Optional<AuthUser> findByEmailAndPassword(String email, String password);
 
-    boolean existsByUsernameAndPassword(String username, String password);
+    boolean existsByEmailAndPassword(String username, String password);
 
 }

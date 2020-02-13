@@ -27,9 +27,6 @@ public class User {
     @Indexed
     String username;
 
-    @Indexed
-    String displayName;
-
     BufferedImage avatar;
 
 }

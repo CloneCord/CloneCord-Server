@@ -1,7 +1,6 @@
 package net.leloubil.clonecordserver.security;
 
 
-import net.leloubil.clonecordserver.authentication.AuthController;
 import net.leloubil.clonecordserver.authentication.AuthUser;
 import net.leloubil.clonecordserver.services.AuthUserService;
 import org.springframework.security.core.userdetails.User;
@@ -27,11 +26,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AuthUser> u = authUserService.getAuthUserByUsername(username);
+        Optional<AuthUser> u = authUserService.getAuthUserByEmail(username);
         if (u.isEmpty()){
             throw new UsernameNotFoundException(username);
         }
         AuthUser user = u.get();
-        return new User(user.getUsername(),user.getPassword(), Collections.emptyList());
+        return new User(user.getEmail(),user.getPassword(), Collections.emptyList());
     }
 }
