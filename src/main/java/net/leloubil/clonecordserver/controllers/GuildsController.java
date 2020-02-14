@@ -4,11 +4,18 @@ import net.leloubil.clonecordserver.data.*;
 import net.leloubil.clonecordserver.exceptions.ConflictException;
 import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
 import net.leloubil.clonecordserver.formdata.LoginUser;
+import net.leloubil.clonecordserver.persistence.MessageRepository;
 import net.leloubil.clonecordserver.services.GuildsService;
 import net.leloubil.clonecordserver.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -48,7 +55,7 @@ public class GuildsController {
     }
 
     @RestController
-    @RequestMapping("/guilds/{guildId}/channels")
+    @RequestMapping("/guilds/{guildId}")
     public class GuildChannel{
 
         @PostMapping
@@ -76,6 +83,53 @@ public class GuildsController {
             Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
             g.getChannels().removeIf(c -> c.getChannelId().equals(channelId));
             guildsService.updateGuild(g);
+        }
+
+        @RestController
+        @RequestMapping("/guilds/{guildId}/{channelId}/messages")
+        public class GuildMessages{
+
+
+            @Autowired
+            private MessageRepository messageRepository;
+
+            @PostMapping
+            public Message sendMessage(@PathVariable UUID guildId,@PathVariable UUID channelId, @RequestBody @Validated Message message){
+                UUID senderId = LoginUser.getCurrent().getUuid();
+                Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
+                Channel c = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
+                message.setId(UUID.randomUUID());
+                message.setSenderId(senderId);
+                message.setChannelId(c.getChannelId());
+                message.setSentDate(new Date());
+                messageRepository.save(message);
+                return message;
+            }
+
+            @DeleteMapping("/{messageId}")
+            public void deleteMessage(@PathVariable UUID guildId,@PathVariable UUID channelId,@PathVariable UUID messageId){
+                Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
+                Channel chan = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("channelId"));
+                Message m = messageRepository.findByIdAndChannelId(messageId,chan.getChannelId()).orElseThrow(() -> new RessourceNotFoundException("messageId"));
+                messageRepository.delete(m);
+            }
+
+            @GetMapping()
+            public List<Message> getMessages(@PathVariable UUID guildId, @PathVariable UUID channelId, @RequestParam(value = "limit", required = false) Integer limit, @RequestParam(value = "before", required = false) Long before, @RequestParam(value = "after", required = false) Long after){
+                Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
+                Channel c = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("channelId"));
+                if(limit == null){
+                    limit = 100;
+                }
+                Date beforeDate = before == null ? new Date() : new Date(before * 1000);
+                if(after == null){
+                    return messageRepository.findAllByChannelIdAndSentDateBefore(c.getChannelId(),beforeDate, PageRequest.of(0,limit, Sort.Direction.ASC,"sentDate")).toList();
+                }
+                else {
+                    return messageRepository.findAllByChannelIdAndSentDateAfter(c.getChannelId(),new Date(after * 1000), PageRequest.of(0,limit, Sort.Direction.ASC,"sentDate")).toList();
+                }
+            }
+
         }
 
     }

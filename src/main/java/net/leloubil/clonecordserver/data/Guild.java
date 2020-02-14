@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -42,4 +43,7 @@ public class Guild {
         members.add(m);
     }
 
+    public Optional<Channel> getChannel(UUID channelId) {
+        return getChannels().stream().filter(c -> c.getChannelId().equals(channelId)).findFirst();
+    }
 }

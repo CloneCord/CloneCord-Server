@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,13 +26,12 @@ public class Message {
     @NotEmpty
     String message;
 
-    @NotNull
+    Date sentDate;
+
     UUID senderId;
 
-    @NotNull
     UUID channelId;
 
-    @NotNull
     List<Reaction> reactionList = new ArrayList<>();
 
 }
