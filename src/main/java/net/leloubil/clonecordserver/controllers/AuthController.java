@@ -1,9 +1,8 @@
-package net.leloubil.clonecordserver.authentication;
+package net.leloubil.clonecordserver.controllers;
 
 
-import net.leloubil.clonecordserver.data.RegistrationUser;
+import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
-import net.leloubil.clonecordserver.services.LoginUserService;
 import net.leloubil.clonecordserver.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 @Data
 @NoArgsConstructor
@@ -12,7 +13,9 @@ import java.util.UUID;
 public class Reaction {
 
     /*Not sure how to store emotes and allows users to use other guilds emotes*/
-    private long emoteId;
-    private UUID authorUuid;
+    @NotNull
+    long emoteId;
 
+    @NotNull
+    UUID authorUuid;
 }

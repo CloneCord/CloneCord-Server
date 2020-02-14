@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,12 +23,23 @@ public class Guild {
     UUID id;
 
     @Indexed
+    @NotEmpty
     String name;
 
-    List<Role> roles;
+    List<Role> roles = new ArrayList<>();
 
-    List<Member> members;
+    List<Member> members = new ArrayList<>();
 
-    List<TextChannel> textChannels;
+    List<Channel> channels = new ArrayList<>();
+
+    public void addMember(User user){
+        addMember(user,false);
+    }
+
+    public void addMember(User user,boolean owner){
+        Member m = new Member(user);
+        m.setOwner(owner);
+        members.add(m);
+    }
 
 }

@@ -4,18 +4,21 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.UUID;
+
 
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Document("TextChannel")
-public class TextChannel {
+public class Channel {
 
-    private String name;
-    private String description;
-    private List<Message> messages;
+    UUID channelId;
+
+    @NotEmpty
+    String name;
+
 
 }

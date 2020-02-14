@@ -1,6 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.formdata.LoginUser;
 import net.leloubil.clonecordserver.persistence.LoginUserRepository;
 import org.springframework.stereotype.Component;
 
@@ -52,12 +52,4 @@ public class LoginUserServiceImpl implements LoginUserService {
         LoginUserRepository.delete(loginUser);
     }
 
-    @Override
-    public boolean isUnique(String email, LoginUser self) {
-        Optional<LoginUser> optionalLoginUser = LoginUserRepository.findByEmail(email);
-        if(optionalLoginUser.isEmpty()){
-            return true;
-        }
-        return optionalLoginUser.get().getUuid() == self.getUuid();
-    }
 }

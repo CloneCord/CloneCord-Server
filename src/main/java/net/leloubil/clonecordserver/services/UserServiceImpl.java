@@ -1,7 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.data.LoginUser;
-import net.leloubil.clonecordserver.data.RegistrationUser;
+import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.persistence.UserRepository;
 import org.springframework.stereotype.Component;
@@ -58,12 +57,5 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-    @Override
-    public boolean isUnique(String username, User self) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if(optionalUser.isEmpty()){
-            return true;
-        }
-        return optionalUser.get().getId() == self.getId();
-    }
+
 }

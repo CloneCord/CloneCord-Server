@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,12 @@ public class Member {
     @Indexed
     String username;
 
-    List<Role> roles;
+    boolean isOwner;
 
+    List<Role> roles = new ArrayList<>();
+
+    public Member(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+    }
 }

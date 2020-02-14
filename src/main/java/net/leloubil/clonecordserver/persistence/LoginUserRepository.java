@@ -1,6 +1,6 @@
 package net.leloubil.clonecordserver.persistence;
 
-import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.formdata.LoginUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

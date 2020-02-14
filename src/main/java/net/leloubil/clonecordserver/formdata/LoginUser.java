@@ -1,16 +1,20 @@
-package net.leloubil.clonecordserver.data;
+package net.leloubil.clonecordserver.formdata;
 
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import net.leloubil.clonecordserver.data.User;
+import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
+import net.leloubil.clonecordserver.services.UserService;
 import net.leloubil.clonecordserver.validation.UniqueEmail;
 import net.leloubil.clonecordserver.validation.ValidPassword;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotEmpty;
@@ -38,6 +42,10 @@ public class LoginUser implements UserDetails {
     @NotEmpty
     @ValidPassword
     String password;
+
+    public static LoginUser getCurrent() {
+        return (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,5 +75,9 @@ public class LoginUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser(UserService userService) {
+        return userService.getUser(this.getUuid()).orElseThrow(() -> new RessourceNotFoundException("userId"));
     }
 }

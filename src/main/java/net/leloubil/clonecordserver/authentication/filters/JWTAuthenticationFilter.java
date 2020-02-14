@@ -3,14 +3,12 @@ package net.leloubil.clonecordserver.authentication.filters;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.formdata.LoginUser;
 import net.leloubil.clonecordserver.services.LoginUserService;
-import net.leloubil.clonecordserver.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Optional;
 
 import static net.leloubil.clonecordserver.security.SecurityConstants.*;
 

@@ -1,12 +1,12 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.data.RegistrationUser;
+import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserService extends UniqueProof<String,User> {
+public interface UserService{
 
     User createUser(RegistrationUser userData);
 

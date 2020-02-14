@@ -1,7 +1,5 @@
 package net.leloubil.clonecordserver.validation;
 
-import net.leloubil.clonecordserver.services.UniqueProof;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
