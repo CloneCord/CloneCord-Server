@@ -60,7 +60,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("CloneCord API")
                 .description("REST API to use CloneCord")
-                .version("1.0.0")
+                .version("1.0.1")
                 .license("GPL")
                 .build();
     }
