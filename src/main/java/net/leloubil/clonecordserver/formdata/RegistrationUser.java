@@ -1,5 +1,7 @@
 package net.leloubil.clonecordserver.formdata;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,7 @@ public class RegistrationUser extends FormLogin {
 
     @NotNull
     @Length(min = 4,max = 10)
+    @ApiModelProperty( value = "User name", required = true)
     String username;
 
 }

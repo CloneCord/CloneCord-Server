@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.formdata;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +18,10 @@ public class FormLogin {
 
     @NotEmpty
     @Indexed
-    @UniqueEmail
+    @UniqueEmail @ApiModelProperty( value = "User email", required = true)
     String email;
 
     @NotEmpty
-    @ValidPassword
+    @ValidPassword @ApiModelProperty( value = "User password", required = true)
     String password;
 }

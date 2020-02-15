@@ -37,7 +37,7 @@ public class ChannelsController {
 
     @PostMapping
     @ApiOperation("Creates a new Channel in specified Guild")
-    public Channel createChannel(@PathVariable @ApiParam("ID of the specified Guild") UUID guildId, @RequestBody @Validated @ApiParam("Channel data") FormChannel channel){
+    public Channel createChannel(@PathVariable @ApiParam(value = "ID of the specified Guild", required = true) UUID guildId, @RequestBody @Validated @ApiParam(value = "Channel data", required = true) FormChannel channel){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel c = new Channel();
         BeanUtils.copyProperties(channel,c);
@@ -49,7 +49,7 @@ public class ChannelsController {
 
     @ApiOperation("Updates specified Channel if current User has permissions")
     @PutMapping("/{channelId}")
-    public Channel updateChannel(@PathVariable @ApiParam("ID of the specified Guild") UUID guildId,@ApiParam("ID of the specified Channel") @PathVariable UUID channelId, @RequestBody @Validated @ApiParam("New channel data") FormChannel channel){
+    public Channel updateChannel(@PathVariable @ApiParam(value = "ID of the specified Guild", required = true) UUID guildId,@ApiParam(value = "ID of the specified Channel", required = true) @PathVariable UUID channelId, @RequestBody @Validated @ApiParam(value = "New channel data", required = true) FormChannel channel){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel chan = g.getChannels().stream().filter(c -> c.getChannelId().equals(channelId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("channelId"));
 
@@ -62,7 +62,7 @@ public class ChannelsController {
 
     @DeleteMapping("/{channelId}")
     @ApiOperation("Deletes specified Channel if current User has permissions")
-    public void deleteChannel(@PathVariable @ApiParam("ID of the specified Guild") UUID guildId, @ApiParam("ID of the specified Channel") @PathVariable UUID channelId){
+    public void deleteChannel(@PathVariable @ApiParam(value = "ID of the specified Guild", required = true) UUID guildId, @ApiParam(value = "ID of the specified Channel", required = true) @PathVariable UUID channelId){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         g.getChannels().removeIf(c -> c.getChannelId().equals(channelId));
         guildsService.updateGuild(g);

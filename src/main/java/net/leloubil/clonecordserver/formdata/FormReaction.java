@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.formdata;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,6 @@ import java.util.UUID;
 public class FormReaction {
 
     /*Not sure how to store emotes and allows users to use other guilds emotes*/
-    @NotNull
+    @NotNull @ApiModelProperty( value = "Emote id", required = true)
     long emoteId;
 }

@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.formdata;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FormMessage {
 
-    @NotEmpty
+    @NotEmpty @ApiModelProperty( value = "Message content", required = true)
     String message;
 
 }

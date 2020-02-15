@@ -49,13 +49,13 @@ public class GuildsController {
 
     @GetMapping("/{guildId}")
     @ApiOperation("Gets info of a specific Guild")
-    public Guild getGuildInfo(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId){
+    public Guild getGuildInfo(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId){
         return guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
     }
 
     @PutMapping("/{guildId}")
     @ApiOperation("Updates an owned Guild")
-    public Guild updateGuild(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId,@RequestBody @Validated @ApiParam("New guild data") FormGuild newGuild){
+    public Guild updateGuild(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId,@RequestBody @Validated @ApiParam(value = "New guild data", required = true) FormGuild newGuild){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         BeanUtils.copyProperties(newGuild,g);
         return guildsService.updateGuild(g);
@@ -63,7 +63,7 @@ public class GuildsController {
 
     @DeleteMapping("/{guildId}")
     @ApiOperation("Deletes an owned Guild")
-    public void deleteGuild(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId){
+    public void deleteGuild(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId){
         guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
     }
 

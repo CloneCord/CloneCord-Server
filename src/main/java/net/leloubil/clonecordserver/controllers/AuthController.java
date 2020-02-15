@@ -34,9 +34,9 @@ public class AuthController {
 
     @PostMapping("/register")
     @ApiOperation(value = "Create an account")
-    public @ResponseBody User signUp(@Validated @RequestBody @ApiParam(name = "Registration data") RegistrationUser authData){
-        authData.setPassword(passwordEncoder.encode(authData.getPassword()));
-        return userService.createUser(authData);
+    public @ResponseBody User signUp(@Validated @RequestBody RegistrationUser registrationData){
+        registrationData.setPassword(passwordEncoder.encode(registrationData.getPassword()));
+        return userService.createUser(registrationData);
     }
 
     @PostMapping("/login")
@@ -55,7 +55,7 @@ public class AuthController {
             ),
             @ApiResponse(code = 401, message = "Failed to log-in")
     })
-    public void login(@Validated @RequestBody @ApiParam("Login data") FormLogin user) {
+    public void login(@Validated @RequestBody FormLogin loginData) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 

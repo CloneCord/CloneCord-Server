@@ -1,6 +1,7 @@
 package net.leloubil.clonecordserver.formdata;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 /**
@@ -19,10 +21,10 @@ import java.util.UUID;
 public class FormRole {
 
     @Indexed
+    @NotEmpty @ApiModelProperty( value = "Role name", required = true)
     String name;
 
-    String displayName;
-
+    @NotEmpty @ApiModelProperty( value = "Role color", required = true)
     String hexColor;
 
 }

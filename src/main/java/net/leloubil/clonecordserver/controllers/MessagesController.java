@@ -38,7 +38,7 @@ public class MessagesController {
 
     @PostMapping
     @ApiOperation("Sends a new message to specified Channel if current User has permissions")
-    public Message sendMessage(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId, @ApiParam("ID of the specified Channel") @PathVariable UUID channelId, @RequestBody @Validated @ApiParam("Message data") FormMessage message){
+    public Message sendMessage(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @ApiParam(value = "ID of the specified Channel", required = true) @PathVariable UUID channelId, @RequestBody @Validated @ApiParam(value = "Message data", required = true) FormMessage message){
         UUID senderId = LoginUser.getCurrent().getUuid();
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel c = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
@@ -52,7 +52,7 @@ public class MessagesController {
 
     @DeleteMapping("/{messageId}")
     @ApiOperation("Deletes specified message in specified Channel if current User has permissions")
-    public void deleteMessage(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId,@ApiParam("ID of the specified Channel") @PathVariable UUID channelId,@PathVariable @ApiParam("ID of the specified Message") UUID messageId){
+    public void deleteMessage(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId,@ApiParam(value = "ID of the specified Channel", required = true) @PathVariable UUID channelId,@PathVariable @ApiParam(value = "ID of the specified Message", required = true) UUID messageId){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel chan = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("channelId"));
         Message m = messageRepository.findByIdAndChannelId(messageId,chan.getChannelId()).orElseThrow(() -> new RessourceNotFoundException("messageId"));
@@ -61,7 +61,7 @@ public class MessagesController {
 
     @GetMapping()
     @ApiOperation("Gets a list of messages in specified Channel if current User has permissions")
-    public List<Message> getMessages(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId, @ApiParam("ID of the specified Channel") @PathVariable UUID channelId, @RequestParam(value = "limit", required = false) @ApiParam(value = "Maximum number of messages to return (max = 100)",defaultValue = "100") Integer limit, @RequestParam(value = "before", required = false) @ApiParam(value = "Return only messages sent before this timestamp", format = "timestamp") Long before, @RequestParam(value = "after", required = false) @ApiParam(value = "Return only mesages after this timestamp", format = "timestamp") Long after){
+    public List<Message> getMessages(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @ApiParam(value = "ID of the specified Channel", required = true) @PathVariable UUID channelId, @RequestParam(value = "limit", required = false) @ApiParam(value = "Maximum number of messages to return (max = 100)",defaultValue = "100") Integer limit, @RequestParam(value = "before", required = false) @ApiParam(value = "Return only messages sent before this timestamp", format = "timestamp") Long before, @RequestParam(value = "after", required = false) @ApiParam(value = "Return only mesages after this timestamp", format = "timestamp") Long after){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel c = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("channelId"));
         if(limit == null){

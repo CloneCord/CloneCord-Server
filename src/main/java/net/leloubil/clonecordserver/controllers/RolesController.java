@@ -29,7 +29,7 @@ public class RolesController {
 
     @PostMapping
     @ApiOperation("Creates a new Role in specified Guild if current User has permissions")
-    public Role createRole(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId, @RequestBody @Validated @ApiParam("Role data") FormRole role){
+    public Role createRole(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @RequestBody @Validated @ApiParam(value = "Role data", required = true) FormRole role){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         if(g.getRoles().stream().anyMatch(r -> r.getName().equals(role.getName()))){
             throw new ConflictException("roleName");
@@ -43,7 +43,7 @@ public class RolesController {
 
     @PutMapping("/{roleId}")
     @ApiOperation("Updates specified Role in specified Guild if current User has permissions")
-    public Role updateRole(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId,@PathVariable UUID roleId, @RequestBody @Validated @ApiParam("New role data") FormRole role){
+    public Role updateRole(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId,@PathVariable UUID roleId, @RequestBody @Validated @ApiParam(value = "New role data", required = true) FormRole role){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Role ro = g.getRoles().stream().filter(r -> r.getId().equals(roleId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("roleId"));
         g.getRoles().remove(ro);
@@ -55,7 +55,7 @@ public class RolesController {
 
     @DeleteMapping("/{roleId}")
     @ApiOperation("Deletes specified Role in specified Guild if current User has permissions")
-    public void deleteRole(@ApiParam("ID of the specified Guild") @PathVariable UUID guildId, @PathVariable @ApiParam("ID of the specified Role") UUID roleId){
+    public void deleteRole(@ApiParam(value = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @PathVariable @ApiParam(value = "ID of the specified Role", required = true) UUID roleId){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         g.getRoles().removeIf(c -> c.getId().equals(roleId));
         guildsService.updateGuild(g);

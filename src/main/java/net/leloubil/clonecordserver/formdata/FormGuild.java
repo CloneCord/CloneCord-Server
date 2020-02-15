@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.formdata;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ import java.util.UUID;
 public class FormGuild {
 
     @Indexed
-    @NotEmpty
+    @NotEmpty @ApiModelProperty( value = "Guild name", required = true)
     String name;
 
 }

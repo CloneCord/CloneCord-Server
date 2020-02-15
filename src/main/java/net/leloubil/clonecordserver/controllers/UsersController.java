@@ -37,7 +37,7 @@ public class UsersController {
 
     @GetMapping("/{userId}")
     @ApiOperation("Gets information about specified User")
-    public User getUser(@PathVariable @ApiParam("ID of the user whose data is requested") UUID userId){
+    public User getUser(@PathVariable @ApiParam(value = "ID of the user whose data is requested", required = true) UUID userId){
         return userService.getUser(userId).orElseThrow(() -> new RessourceNotFoundException("userId"));
     }
 
@@ -50,7 +50,7 @@ public class UsersController {
 
     @PutMapping("/@self")
     @ApiOperation("Updates information about current User")
-    public User putSelf(@Validated @RequestBody @ApiParam("New User data") FormUser user){
+    public User putSelf(@Validated @RequestBody @ApiParam(value = "New User data", required = true) FormUser user){
         User u = LoginUser.getCurrent().getUser(userService);
         BeanUtils.copyProperties(user,u);
         return userService.updateUser(u);

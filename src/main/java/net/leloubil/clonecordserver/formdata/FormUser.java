@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.formdata;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import net.leloubil.clonecordserver.validation.UniqueUsername;
@@ -23,9 +24,10 @@ public class FormUser {
 
     @NotEmpty
     @Indexed
-    @UniqueUsername
+    @UniqueUsername @ApiModelProperty( value = "User name", required = true)
     String username;
 
+    @ApiModelProperty( value = "User avatar")
     String avatar;
 
 }
