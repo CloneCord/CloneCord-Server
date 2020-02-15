@@ -1,7 +1,11 @@
 package net.leloubil.clonecordserver.controllers;
 
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.formdata.FormLogin;
 import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.services.UserService;
@@ -34,7 +38,20 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void login(@Validated @RequestParam LoginUser user) {
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 200,
+                    message = "Successful login",
+                    responseHeaders = {
+                            @ResponseHeader(
+                                    name = "Authorization",
+                                    description = "JWT Token for future api calls",
+                                    response = String.class
+                            )
+                    }
+            )
+    })
+    public void login(@Validated @RequestBody FormLogin user) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
