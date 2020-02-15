@@ -1,6 +1,7 @@
 package net.leloubil.clonecordserver.controllers;
 
 
+import net.leloubil.clonecordserver.data.LoginUser;
 import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.services.UserService;
@@ -32,5 +33,9 @@ public class AuthController {
         return userService.createUser(authData);
     }
 
+    @PostMapping("/login")
+    public void login(@Validated @RequestParam LoginUser user) {
+        throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
+    }
 
 }

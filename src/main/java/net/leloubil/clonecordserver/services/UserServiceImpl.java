@@ -3,6 +3,7 @@ package net.leloubil.clonecordserver.services;
 import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.persistence.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,12 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(RegistrationUser userData) {
-        UUID uuid = UUID.randomUUID();
-        User u = User.builder()
-                .id(uuid)
-                .username(userData.getUsername())
-                .build();
-        userData.setUuid(uuid);
+        User u = new User();
+        BeanUtils.copyProperties(userData,u);
         LoginUserService.createLoginUser(userData);
         return userRepository.save(u);
     }

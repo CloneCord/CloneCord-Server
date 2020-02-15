@@ -2,22 +2,18 @@ package net.leloubil.clonecordserver.formdata;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import net.leloubil.clonecordserver.data.LoginUser;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RegistrationUser extends FormLogin {
+public class FormReaction {
 
+    /*Not sure how to store emotes and allows users to use other guilds emotes*/
     @NotNull
-    @Length(min = 4,max = 10)
-    String username;
-
+    long emoteId;
 }

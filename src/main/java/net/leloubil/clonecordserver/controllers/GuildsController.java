@@ -3,14 +3,18 @@ package net.leloubil.clonecordserver.controllers;
 import net.leloubil.clonecordserver.data.*;
 import net.leloubil.clonecordserver.exceptions.ConflictException;
 import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
-import net.leloubil.clonecordserver.formdata.LoginUser;
+import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.formdata.FormChannel;
+import net.leloubil.clonecordserver.formdata.FormGuild;
+import net.leloubil.clonecordserver.formdata.FormMessage;
+import net.leloubil.clonecordserver.formdata.FormRole;
 import net.leloubil.clonecordserver.persistence.MessageRepository;
 import net.leloubil.clonecordserver.services.GuildsService;
 import net.leloubil.clonecordserver.services.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +36,7 @@ public class GuildsController {
 
 
     @PostMapping("")
-    public Guild createGuild(@Validated @RequestBody Guild guild){
+    public Guild createGuild(@Validated @RequestBody FormGuild guild){
         User owner = LoginUser.getCurrent().getUser(userService);
         return guildsService.createGuild(guild, owner);
     }
@@ -43,9 +47,9 @@ public class GuildsController {
     }
 
     @PutMapping("/{guildId}")
-    public Guild updateGuildName(@PathVariable UUID guildId,@RequestBody String newName){
+    public Guild updateGuild(@PathVariable UUID guildId,@RequestBody FormGuild newGuild){
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
-        g.setName(newName);
+        BeanUtils.copyProperties(newGuild,g);
         return guildsService.updateGuild(g);
     }
 
@@ -59,23 +63,25 @@ public class GuildsController {
     public class GuildChannel{
 
         @PostMapping
-        public Channel createChannel(@PathVariable UUID guildId, @RequestBody @Validated Channel channel){
+        public Channel createChannel(@PathVariable UUID guildId, @RequestBody @Validated FormChannel channel){
             Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
-            channel.setChannelId(UUID.randomUUID());
-            g.getChannels().add(channel);
+            Channel c = new Channel();
+            BeanUtils.copyProperties(channel,c);
+            g.getChannels().add(c);
             guildsService.updateGuild(g);
-            return channel;
+            return c;
         }
 
         @PutMapping("/{channelId}")
-        public Channel updateChannel(@PathVariable UUID guildId,@PathVariable UUID channelId, @RequestBody @Validated Channel channel){
+        public Channel updateChannel(@PathVariable UUID guildId,@PathVariable UUID channelId, @RequestBody @Validated FormChannel channel){
             Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
             Channel chan = g.getChannels().stream().filter(c -> c.getChannelId().equals(channelId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("channelId"));
-            channel.setChannelId(chan.getChannelId());
+
             g.getChannels().remove(chan);
-            g.getChannels().add(channel);
+            BeanUtils.copyProperties(channel,chan);
+            g.getChannels().add(chan);
             guildsService.updateGuild(g);
-            return channel;
+            return chan;
         }
 
         @DeleteMapping("/{channelId}")
@@ -94,16 +100,16 @@ public class GuildsController {
             private MessageRepository messageRepository;
 
             @PostMapping
-            public Message sendMessage(@PathVariable UUID guildId,@PathVariable UUID channelId, @RequestBody @Validated Message message){
+            public Message sendMessage(@PathVariable UUID guildId,@PathVariable UUID channelId, @RequestBody @Validated FormMessage message){
                 UUID senderId = LoginUser.getCurrent().getUuid();
                 Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
                 Channel c = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
-                message.setId(UUID.randomUUID());
-                message.setSenderId(senderId);
-                message.setChannelId(c.getChannelId());
-                message.setSentDate(new Date());
-                messageRepository.save(message);
-                return message;
+                Message m = new Message();
+                BeanUtils.copyProperties(message,m);
+                m.setSenderId(senderId);
+                m.setChannelId(c.getChannelId());
+                messageRepository.save(m);
+                return m;
             }
 
             @DeleteMapping("/{messageId}")
@@ -140,30 +146,31 @@ public class GuildsController {
     public class GuildRole{
 
         @PostMapping
-        public Role createRole(@PathVariable UUID guildId, @RequestBody @Validated Role role){
+        public Role createRole(@PathVariable UUID guildId, @RequestBody @Validated FormRole role){
             Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
             if(g.getRoles().stream().anyMatch(r -> r.getName().equals(role.getName()))){
                 throw new ConflictException("roleName");
             }
-            role.setId(UUID.randomUUID());
-            g.getRoles().add(role);
+            Role r = new Role();
+            BeanUtils.copyProperties(role,r);
+            g.getRoles().add(r);
             guildsService.updateGuild(g);
-            return role;
+            return r;
         }
 
         @PutMapping("/{roleId}")
-        public Role updateRole(@PathVariable UUID guildId,@PathVariable UUID roleId, @RequestBody @Validated Role role){
+        public Role updateRole(@PathVariable UUID guildId,@PathVariable UUID roleId, @RequestBody @Validated FormRole role){
             Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
             Role ro = g.getRoles().stream().filter(r -> r.getId().equals(roleId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("roleId"));
-            role.setId(ro.getId());
             g.getRoles().remove(ro);
-            g.getRoles().add(role);
+            BeanUtils.copyProperties(role,ro);
+            g.getRoles().add(ro);
             guildsService.updateGuild(g);
-            return role;
+            return ro;
         }
 
         @DeleteMapping("/{roleId}")
-        public void deleteChannel(@PathVariable UUID guildId, @PathVariable UUID roleId){
+        public void deleteRole(@PathVariable UUID guildId, @PathVariable UUID roleId){
             Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
             g.getRoles().removeIf(c -> c.getId().equals(roleId));
             guildsService.updateGuild(g);

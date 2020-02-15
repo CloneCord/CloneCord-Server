@@ -1,7 +1,9 @@
 package net.leloubil.clonecordserver.services;
 
-import net.leloubil.clonecordserver.formdata.LoginUser;
+import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.formdata.FormLogin;
 import net.leloubil.clonecordserver.persistence.LoginUserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -18,8 +20,10 @@ public class LoginUserServiceImpl implements LoginUserService {
 
 
     @Override
-    public LoginUser createLoginUser(LoginUser loginUser) {
-        return LoginUserRepository.insert(loginUser);
+    public LoginUser createLoginUser(FormLogin loginUser) {
+        LoginUser u = new LoginUser();
+        BeanUtils.copyProperties(loginUser,u);
+        return LoginUserRepository.insert(u);
     }
 
     @Override

@@ -1,12 +1,15 @@
-package net.leloubil.clonecordserver.formdata;
+package net.leloubil.clonecordserver.data;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
+import net.leloubil.clonecordserver.formdata.FormLogin;
 import net.leloubil.clonecordserver.services.UserService;
 import net.leloubil.clonecordserver.validation.UniqueEmail;
 import net.leloubil.clonecordserver.validation.ValidPassword;
@@ -26,53 +29,45 @@ import java.util.UUID;
 /**
  * Class to represent data needed to login or register
  */
+@EqualsAndHashCode(callSuper = true)
 @Data @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Document("LoginUsers")
-public class LoginUser implements UserDetails {
+public class LoginUser extends FormLogin implements UserDetails {
 
     @Id
-    UUID uuid;
-
-    @NotEmpty
-    @Indexed
-    @UniqueEmail
-    String email;
-
-    @NotEmpty
-    @ValidPassword
-    String password;
+    UUID uuid = UUID.randomUUID();
 
     public static LoginUser getCurrent() {
         return (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    @Override
+    @Override @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
     }
 
-    @Override
+    @Override @JsonIgnore
     public String getUsername() {
-        return email;
+        return getEmail();
     }
 
-    @Override
+    @Override  @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @Override
+    @Override  @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    @Override
+    @Override  @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @Override
+    @Override  @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

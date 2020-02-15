@@ -23,7 +23,7 @@ import java.util.UUID;
 public class Member {
 
     @Id
-    UUID id;
+    UUID id = UUID.randomUUID();
 
     @Indexed
     String username;

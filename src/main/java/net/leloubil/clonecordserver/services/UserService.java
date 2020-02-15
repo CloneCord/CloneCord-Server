@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
+import net.leloubil.clonecordserver.formdata.FormUser;
 import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 

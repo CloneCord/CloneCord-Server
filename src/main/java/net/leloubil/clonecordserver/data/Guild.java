@@ -2,9 +2,12 @@ package net.leloubil.clonecordserver.data;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import net.leloubil.clonecordserver.formdata.FormGuild;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,18 +17,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Document("Guilds")
-public class Guild {
+public class Guild extends FormGuild {
 
     @Id
-    UUID id;
-
-    @Indexed
-    @NotEmpty
-    String name;
+    UUID id = UUID.randomUUID();
 
     List<Role> roles = new ArrayList<>();
 

@@ -1,7 +1,7 @@
 package net.leloubil.clonecordserver.controllers;
 
 import net.leloubil.clonecordserver.data.Guild;
-import net.leloubil.clonecordserver.formdata.LoginUser;
+import net.leloubil.clonecordserver.data.LoginUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
 import net.leloubil.clonecordserver.services.GuildsService;
@@ -47,7 +47,7 @@ public class UsersController {
     }
 
     @GetMapping("/@self/guilds")
-    public List<Guild> putSelf(){
+    public List<Guild> getSelfGuilds(){
         User user = LoginUser.getCurrent().getUser(userService);
         return guildsService.getGuildsContaining(user);
     }

@@ -3,7 +3,7 @@ package net.leloubil.clonecordserver.authentication.filters;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.leloubil.clonecordserver.formdata.LoginUser;
+import net.leloubil.clonecordserver.data.LoginUser;
 import net.leloubil.clonecordserver.services.LoginUserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
