@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()))
                 .select()
-                .paths(Predicates.not(PathSelectors.ant("/actuator/**"))) //disable spring metrics on swagger
+                .paths(Predicates.not(Predicates.or(PathSelectors.ant("/actuator/**"),PathSelectors.ant("/error/**")))) //disable spring metrics on swagger
                 .apis(RequestHandlerSelectors.any())
                 .build();
     }
