@@ -26,7 +26,7 @@ import java.util.UUID;
 @RestController
 @SuppressWarnings("deprecation")
 @RequestMapping("/guilds/{guildId}")
-@Api( tags = "Channels API", description = "Operations on channels")
+@Api( tags = "Channels", description = "Operations on channels")
 public class ChannelsController {
 
     private GuildsService guildsService;

@@ -24,7 +24,7 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 @RestController
 @RequestMapping("/guilds/{guildId}/{channelId}/messages")
-@Api( tags = "Messages API", description = "Operations on messages")
+@Api( tags = "Messages", description = "Operations on messages")
 public class MessagesController {
 
 

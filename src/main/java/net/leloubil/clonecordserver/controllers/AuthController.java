@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @SuppressWarnings("deprecation")
 @RequestMapping("/auth")
-@Api( tags = "Authentication API", description = "Log-in and sign-up")
+@Api( tags = "Authentication", description = "Log-in and sign-up")
 public class AuthController {
 
     private final UserService userService;

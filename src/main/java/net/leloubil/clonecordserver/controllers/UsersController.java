@@ -23,7 +23,7 @@ import java.util.UUID;
 @RestController
 @SuppressWarnings("deprecation")
 @RequestMapping("/users")
-@Api( tags = "Users API", description = "Operations on users")
+@Api( tags = "Users", description = "Operations on users")
 public class UsersController {
 
     private final UserService userService;

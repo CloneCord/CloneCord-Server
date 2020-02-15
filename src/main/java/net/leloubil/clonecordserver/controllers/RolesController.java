@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController
 @SuppressWarnings("deprecation")
 @RequestMapping("/guilds/{guildId}/roles")
-@Api( tags = "Roles API", description = "Operations on roles")
+@Api( tags = "Roles", description = "Operations on roles")
 public class RolesController {
 
     private GuildsService guildsService;
