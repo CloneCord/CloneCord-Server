@@ -1,4 +1,4 @@
 # CloneCord-Server
-CloneCord Server
+Serveur des services CloneCord
 
-https://discord.gg/kRYT4qR
+[Rejoignez notre Discord](https://discord.gg/kRYT4qR)
