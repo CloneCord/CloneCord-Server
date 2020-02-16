@@ -1,5 +1,6 @@
 package net.leloubil.clonecordserver.services;
 
+import net.leloubil.clonecordserver.data.LoginUser;
 import net.leloubil.clonecordserver.formdata.RegistrationUser;
 import net.leloubil.clonecordserver.data.User;
 import net.leloubil.clonecordserver.persistence.UserRepository;
@@ -25,7 +26,8 @@ public class UserServiceImpl implements UserService {
     public User createUser(RegistrationUser userData) {
         User u = new User();
         BeanUtils.copyProperties(userData,u);
-        LoginUserService.createLoginUser(userData);
+        LoginUser lu = LoginUserService.createLoginUser(userData);
+        u.setId(lu.getUuid());
         return userRepository.save(u);
     }
 

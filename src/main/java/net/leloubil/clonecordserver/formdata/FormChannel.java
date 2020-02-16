@@ -5,8 +5,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 
@@ -15,8 +18,8 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FormChannel {
 
-    @NotEmpty @ApiModelProperty( value = "Channel name", required = true)
+    @NotBlank
+    @Size(min = 2,max = 10)
     String name;
-
 
 }

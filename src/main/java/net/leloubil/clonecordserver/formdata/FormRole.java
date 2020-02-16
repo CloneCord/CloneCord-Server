@@ -6,10 +6,14 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 /**
@@ -21,10 +25,12 @@ import java.util.UUID;
 public class FormRole {
 
     @Indexed
-    @NotEmpty @ApiModelProperty( value = "Role name", required = true)
+    @NotBlank
+    @Size(min = 1,max = 10)
     String name;
 
-    @NotEmpty @ApiModelProperty( value = "Role color", required = true)
+    @NotEmpty
+    @Pattern(regexp = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
     String hexColor;
 
 }

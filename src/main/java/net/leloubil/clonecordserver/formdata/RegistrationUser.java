@@ -10,7 +10,9 @@ import lombok.experimental.FieldDefaults;
 import net.leloubil.clonecordserver.data.LoginUser;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -18,9 +20,8 @@ import javax.validation.constraints.NotNull;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationUser extends FormLogin {
 
-    @NotNull
-    @Length(min = 4,max = 10)
-    @ApiModelProperty( value = "User name", required = true)
+    @NotBlank
+    @Size(min = 2,max = 15)
     String username;
 
 }
