@@ -1,7 +1,5 @@
 package net.leloubil.clonecordserver.swagger;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
 import net.leloubil.clonecordserver.security.SecurityConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,15 +14,14 @@ import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.List;
+import java.util.function.Predicate;
 
-@SuppressWarnings("Guava")
 @Configuration
-@EnableSwagger2
+@EnableSwagger2WebMvc
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
@@ -34,8 +31,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .forCodeGeneration(true)
                 .useDefaultResponseMessages(false)
-                .securityContexts(Lists.newArrayList(securityContext()))
-                .securitySchemes(Lists.newArrayList(apiKey()))
+                .securityContexts(List.of(securityContext()))
+                .securitySchemes(List.of(apiKey()))
                 .select()
                 .paths(PathSelectors.any())
                 .apis(RequestHandlerSelectors.basePackage("net.leloubil"))
@@ -49,14 +46,14 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(Predicates.not(PathSelectors.ant("/auth/*")))
+                .forPaths(Predicate.not(PathSelectors.ant("/auth/*")))
                 .build();
     }
 
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global","accessEverything");
         AuthorizationScope[] scopes = {authorizationScope};
-        return Lists.newArrayList(new SecurityReference("JWT",scopes));
+        return List.of(new SecurityReference("JWT", scopes));
     }
 
     private ApiInfo apiInfo() {

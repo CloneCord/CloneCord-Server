@@ -1,6 +1,5 @@
 package net.leloubil.clonecordserver.validation;
 
-import com.google.common.base.Joiner;
 import org.passay.*;
 
 import javax.validation.ConstraintValidator;
