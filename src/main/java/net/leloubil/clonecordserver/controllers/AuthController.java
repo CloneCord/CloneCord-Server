@@ -36,26 +36,28 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Create an account")
-    public @ResponseBody User signUp(@Validated @RequestBody RegistrationUser registrationData){
+    public @ResponseBody
+    User signUp(@Validated @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true) RegistrationUser registrationData) {
         registrationData.setPassword(passwordEncoder.encode(registrationData.getPassword()));
         return userService.createUser(registrationData);
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Log in", responses = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successful login",
-                    headers = {
-                            @Header(
-                                    name = "Authorization",
-                                    description = "JWT Token for future api calls"
-                            )
-                    }
-            ),
-            @ApiResponse(responseCode = "403", description = "Failed to log-in")
-    })
-    public void login(@Validated @RequestBody FormLogin loginData) {
+    @Operation(summary = "Log in",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful login",
+                            headers = {
+                                    @Header(
+                                            name = "Authorization",
+                                            description = "JWT Token for future api calls"
+                                    )
+                            }
+                    ),
+                    @ApiResponse(responseCode = "403", description = "Failed to log-in")
+            })
+    public void login(@Validated @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true) FormLogin loginData) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
 
