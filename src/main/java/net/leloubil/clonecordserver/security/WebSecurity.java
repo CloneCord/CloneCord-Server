@@ -38,16 +38,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 //allow sign up url
-                .antMatchers(HttpMethod.POST,"/auth/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/*").permitAll()
                 // spring health endpoints
                 .antMatchers("/actuator/*").permitAll()
                 // swagger
-                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
                 // swagger ui
-                .antMatchers("/swagger-resources").permitAll()
-                .antMatchers("/swagger-resources/**/*").permitAll()
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/webjars/**/*").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 //everything else needs to be logged in
                 .anyRequest().authenticated()
                 .and()

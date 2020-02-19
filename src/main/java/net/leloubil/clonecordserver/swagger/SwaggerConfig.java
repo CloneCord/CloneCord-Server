@@ -1,68 +1,43 @@
 package net.leloubil.clonecordserver.swagger;
 
-import net.leloubil.clonecordserver.security.SecurityConstants;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 @Configuration
-@EnableSwagger2WebMvc
-@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
     @Bean
-    public Docket docket(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .forCodeGeneration(true)
-                .useDefaultResponseMessages(false)
-                .securityContexts(List.of(securityContext()))
-                .securitySchemes(List.of(apiKey()))
-                .select()
-                .paths(PathSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("net.leloubil"))
-                .build();
+    public OpenAPI docket() {
+        return new OpenAPI()
+                .info(apiInfo())
+                .components(new Components()
+                        .addSecuritySchemes("user-auth", securityScheme())
+                )
+                .addSecurityItem(new SecurityRequirement().addList("user-auth"));
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("JWT", SecurityConstants.HEADER_STRING,"header");
+
+    private SecurityScheme securityScheme() {
+        return new SecurityScheme()
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.HEADER)
+                .name("Authorization")
+                .bearerFormat("JWT")
+                .scheme("bearer");
     }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(Predicate.not(PathSelectors.ant("/auth/*")))
-                .build();
-    }
-
-    private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global","accessEverything");
-        AuthorizationScope[] scopes = {authorizationScope};
-        return List.of(new SecurityReference("JWT", scopes));
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
+    private Info apiInfo() {
+        return new Info()
                 .title("CloneCord API")
                 .description("REST API to use CloneCord")
                 .version("1.0.1")
-                .license("GPL")
-                .build();
+                .license(new License().name("GPL"));
     }
 
 

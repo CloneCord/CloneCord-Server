@@ -2,7 +2,6 @@ package net.leloubil.clonecordserver.data;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,16 +10,12 @@ import lombok.experimental.FieldDefaults;
 import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
 import net.leloubil.clonecordserver.formdata.FormLogin;
 import net.leloubil.clonecordserver.services.UserService;
-import net.leloubil.clonecordserver.validation.UniqueEmail;
-import net.leloubil.clonecordserver.validation.ValidPassword;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;

@@ -1,8 +1,8 @@
 package net.leloubil.clonecordserver.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.leloubil.clonecordserver.data.Guild;
 import net.leloubil.clonecordserver.data.LoginUser;
 import net.leloubil.clonecordserver.data.User;
@@ -21,9 +21,8 @@ import java.util.UUID;
  * Controller for endpoint related to user data
  */
 @RestController
-@SuppressWarnings("deprecation")
 @RequestMapping("/users")
-@Api( tags = "Users", description = "Operations on users")
+@Tag(name = "Users", description = "Operations on users")
 public class UsersController {
 
     private final UserService userService;
@@ -36,28 +35,28 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}")
-    @ApiOperation("Gets information about specified User")
-    public User getUser(@PathVariable @ApiParam(value = "ID of the user whose data is requested", required = true) UUID userId){
+    @Operation(description = "Gets information about specified User")
+    public User getUser(@PathVariable @Parameter(description = "ID of the user whose data is requested", required = true) UUID userId) {
         return userService.getUser(userId).orElseThrow(() -> new RessourceNotFoundException("userId"));
     }
 
     @GetMapping("/@self")
-    @ApiOperation("Gets information about current User")
+    @Operation(description = "Gets information about current User")
     public User getSelf(){
         LoginUser loginUser = LoginUser.getCurrent();
         return userService.getUser(loginUser.getUuid()).orElseThrow(() -> new RessourceNotFoundException("userId"));
     }
 
     @PutMapping("/@self")
-    @ApiOperation("Updates information about current User")
-    public User putSelf(@Validated @RequestBody @ApiParam(value = "New User data", required = true) FormUser user){
+    @Operation(description = "Updates information about current User")
+    public User putSelf(@Validated @RequestBody @Parameter(description = "New User data", required = true) FormUser user) {
         User u = LoginUser.getCurrent().getUser(userService);
-        BeanUtils.copyProperties(user,u);
+        BeanUtils.copyProperties(user, u);
         return userService.updateUser(u);
     }
 
     @GetMapping("/@self/guilds")
-    @ApiOperation("Gets list of guilds the current User is a Member of")
+    @Operation(description = "Gets list of guilds the current User is a Member of")
     public List<Guild> getSelfGuilds(){
         User user = LoginUser.getCurrent().getUser(userService);
         return guildsService.getGuildsContaining(user);
