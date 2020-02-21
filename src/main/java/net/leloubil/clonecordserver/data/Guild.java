@@ -5,15 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
 import net.leloubil.clonecordserver.formdata.FormGuild;
+import net.leloubil.clonecordserver.services.GuildsService;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,17 +25,25 @@ public class Guild extends FormGuild {
     @Id
     UUID id = UUID.randomUUID();
 
-    List<Role> roles = new ArrayList<>();
+    HashSet<Role> roles = new HashSet<>();
 
-    List<Member> members = new ArrayList<>();
+    HashSet<Member> members = new HashSet<>();
 
-    List<Channel> channels = new ArrayList<>();
+    HashSet<Channel> channels = new HashSet<>();
 
-    public void addMember(User user){
-        addMember(user,false);
+    public static Guild getGuild(UUID guildId, GuildsService guildsService) {
+        return guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
     }
 
-    public void addMember(User user,boolean owner){
+    public Member getMember(UUID memberId) {
+        return getMembers().stream().filter(m -> m.getId().equals(memberId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("memberId"));
+    }
+
+    public void addMember(User user) {
+        addMember(user, false);
+    }
+
+    public void addMember(User user, boolean owner) {
         Member m = new Member(user);
         m.setOwner(owner);
         members.add(m);
@@ -45,5 +51,13 @@ public class Guild extends FormGuild {
 
     public Optional<Channel> getChannel(UUID channelId) {
         return getChannels().stream().filter(c -> c.getChannelId().equals(channelId)).findFirst();
+    }
+
+    public boolean isOwner(UUID uuid) {
+        return getMembers().stream().anyMatch(s -> s.getId().equals(uuid) && s.isOwner());
+    }
+
+    public Role getRole(UUID roleId) {
+        return getRoles().stream().filter(r -> r.getId().equals(roleId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("roleId"));
     }
 }

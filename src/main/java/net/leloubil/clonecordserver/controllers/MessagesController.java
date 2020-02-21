@@ -15,6 +15,7 @@ import net.leloubil.clonecordserver.services.GuildsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class MessagesController {
 
     @PostMapping
     @Operation(description = "Sends a new message to specified Channel if current User has permissions")
+    @PreAuthorize("@guildPermissionCheck.hasPermission('WRITE_MESSAGES',#guildId)")
     public Message sendMessage(@Parameter(description = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @Parameter(description = "ID of the specified Channel", required = true) @PathVariable UUID channelId, @RequestBody @Validated @Parameter(description = "Message data", required = true) FormMessage message) {
         UUID senderId = LoginUser.getCurrent().getUuid();
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
@@ -56,11 +58,14 @@ public class MessagesController {
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel chan = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("channelId"));
         Message m = messageRepository.findByIdAndChannelId(messageId, chan.getChannelId()).orElseThrow(() -> new RessourceNotFoundException("messageId"));
-        messageRepository.delete(m);
+        if (m.getSenderId().equals(LoginUser.getCurrent().getUuid()) || g.isOwner(LoginUser.getCurrent().getUuid())) {
+            messageRepository.delete(m);
+        }
     }
 
     @GetMapping()
     @Operation(description = "Gets a list of messages in specified Channel if current User has permissions")
+    @PreAuthorize("@guildPermissionCheck.hasPermission('READ_MESSAGES',#guildId)")
     public List<Message> getMessages(@Parameter(description = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @Parameter(description = "ID of the specified Channel", required = true) @PathVariable UUID channelId, @RequestParam(value = "limit", required = false) @Parameter(description = "Maximum number of messages to return (max = 100)") Integer limit, @RequestParam(value = "before", required = false) @Parameter(description = "Return only messages sent before this timestamp") Long before, @RequestParam(value = "after", required = false) @Parameter(description = "Return only mesages after this timestamp") Long after) {
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel c = g.getChannel(channelId).orElseThrow(() -> new RessourceNotFoundException("channelId"));

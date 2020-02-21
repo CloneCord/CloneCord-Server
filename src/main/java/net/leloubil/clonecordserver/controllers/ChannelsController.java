@@ -9,6 +9,7 @@ import net.leloubil.clonecordserver.exceptions.RessourceNotFoundException;
 import net.leloubil.clonecordserver.formdata.FormChannel;
 import net.leloubil.clonecordserver.services.GuildsService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class ChannelsController {
 
     @PostMapping
     @Operation(description = "Creates a new Channel in specified Guild")
+    @PreAuthorize("@guildPermissionCheck.hasPermission('CHANNELS',#guildId)")
     public Channel createChannel(@PathVariable @Parameter(description = "ID of the specified Guild", required = true) UUID guildId, @RequestBody @Validated @Parameter(description = "Channel data", required = true) FormChannel channel) {
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel c = new Channel();
@@ -39,6 +41,7 @@ public class ChannelsController {
 
     @Operation(description = "Updates specified Channel if current User has permissions")
     @PutMapping("/{channelId}")
+    @PreAuthorize("@guildPermissionCheck.hasPermission('CHANNELS',#guildId)")
     public Channel updateChannel(@PathVariable @Parameter(description = "ID of the specified Guild", required = true) UUID guildId, @Parameter(description = "ID of the specified Channel", required = true) @PathVariable UUID channelId, @RequestBody @Validated @Parameter(description = "New channel data", required = true) FormChannel channel) {
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         Channel chan = g.getChannels().stream().filter(c -> c.getChannelId().equals(channelId)).findFirst().orElseThrow(() -> new RessourceNotFoundException("channelId"));
@@ -52,6 +55,7 @@ public class ChannelsController {
 
     @DeleteMapping("/{channelId}")
     @Operation(description = "Deletes specified Channel if current User has permissions")
+    @PreAuthorize("@guildPermissionCheck.hasPermission('CHANNELS',#guildId)")
     public void deleteChannel(@PathVariable @Parameter(description = "ID of the specified Guild", required = true) UUID guildId, @Parameter(description = "ID of the specified Channel", required = true) @PathVariable UUID channelId) {
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         g.getChannels().removeIf(c -> c.getChannelId().equals(channelId));

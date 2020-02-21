@@ -1,12 +1,15 @@
 package net.leloubil.clonecordserver.data;
 
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import net.leloubil.clonecordserver.formdata.FormRole;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -20,5 +23,7 @@ public class Role extends FormRole {
 
     @Id
     UUID id = UUID.randomUUID();
+
+    HashSet<Permissions> rolePermissions = new HashSet<>();
 
 }

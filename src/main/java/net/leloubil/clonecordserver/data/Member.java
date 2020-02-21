@@ -2,14 +2,12 @@ package net.leloubil.clonecordserver.data;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -30,7 +28,7 @@ public class Member {
 
     boolean isOwner;
 
-    List<Role> roles = new ArrayList<>();
+    HashSet<Role> roles = new HashSet<>();
 
     public Member(User user) {
         this.id = user.getId();

@@ -18,9 +18,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static net.leloubil.clonecordserver.security.SecurityConstants.TOKEN_PREFIX;
-import static net.leloubil.clonecordserver.security.SecurityConstants.HEADER_STRING;
-import static net.leloubil.clonecordserver.security.SecurityConstants.SECRET;
+import static net.leloubil.clonecordserver.security.SecurityConstants.*;
 
 /**
  * Filter to ensure user is properly authenticated
