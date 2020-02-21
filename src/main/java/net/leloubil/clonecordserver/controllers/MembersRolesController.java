@@ -24,7 +24,7 @@ public class MembersRolesController {
 
     @DeleteMapping
     @PreAuthorize("@guildPermissionCheck.hasPermission('ADMINISTRATOR',#guildId)")
-    public void removeRole(@PathVariable UUID guildId, @PathVariable UUID memberId, UUID roleId) {
+    public void removeRole(@PathVariable UUID guildId, @PathVariable UUID memberId, @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true) UUID roleId) {
         Guild g = Guild.getGuild(guildId, guildsService);
         Role r = g.getRole(roleId);
         Member m = g.getMember(memberId);
@@ -33,7 +33,7 @@ public class MembersRolesController {
 
     @PatchMapping
     @PreAuthorize("@guildPermissionCheck.hasPermission('ADMINISTRATOR',#guildId)")
-    public void addRole(@PathVariable UUID guildId, @PathVariable UUID memberId, UUID roleId) {
+    public void addRole(@PathVariable UUID guildId, @PathVariable UUID memberId, @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true) UUID roleId) {
         Guild g = Guild.getGuild(guildId, guildsService);
         Role r = g.getRole(roleId);
         Member m = g.getMember(memberId);

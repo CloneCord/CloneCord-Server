@@ -50,7 +50,7 @@ public class GuildsController {
     @PutMapping("/{guildId}")
     @Operation(description = "Updates an owned Guild")
     @PreAuthorize("@guildPermissionCheck.hasPermission('ADMINISTRATOR',#guildId)")
-    public Guild updateGuild(@Parameter(description = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @RequestBody @Validated @Parameter(description = "New guild data", required = true) FormGuild newGuild) {
+    public Guild updateGuild(@Parameter(description = "ID of the specified Guild", required = true) @PathVariable UUID guildId, @RequestBody @Validated @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "New guild data", required = true) FormGuild newGuild) {
         Guild g = guildsService.getGuildById(guildId).orElseThrow(() -> new RessourceNotFoundException("guildId"));
         BeanUtils.copyProperties(newGuild, g);
         return guildsService.updateGuild(g);
