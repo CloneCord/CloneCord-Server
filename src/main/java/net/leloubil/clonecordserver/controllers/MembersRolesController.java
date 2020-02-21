@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/guilds/{guildId}/members/{memberId}/roles")
-@Tag(name = "Members", description = "Operations on a guild's members")
+@Tag(name = "MemberRoles", description = "Operations roles of guild's members")
 public class MembersRolesController {
 
     private final GuildsService guildsService;
