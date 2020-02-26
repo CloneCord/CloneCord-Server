@@ -53,3 +53,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+task unzip(type: Copy){
+    def zipFile = jar.getArchiveFile()
+    def outputDir = file("${buildDir}/unpacked/dist")
+    from zipTree(zipFile)
+    into outputDir
+}
+
+bootJar.finalizedBy tasks.unzip
