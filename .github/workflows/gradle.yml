@@ -28,7 +28,7 @@ jobs:
     - name: Publish container
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: clonecord-server
+        name: clonecord/clonecord-server
         username: ${{secrets.QUAY_USERNAME}}
         password: ${{secrets.QUAY_PASSWORD}}
         registry: quay.io
