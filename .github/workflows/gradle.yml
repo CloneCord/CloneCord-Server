@@ -1,4 +1,4 @@
-name: Java CI
+name: CI
 
 on: [push]
 
@@ -29,6 +29,6 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: clonecord-server
-        username: ${{QUAY_USERNAME}}
-        password: ${{QUAY_PASSWORD}}
+        username: ${{secrets.QUAY_USERNAME}}
+        password: ${{secrets.QUAY_PASSWORD}}
         registry: quay.io
