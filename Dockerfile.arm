@@ -1,0 +1,14 @@
+FROM arm64v8/openjdk:11-jre-slim
+
+RUN adduser spring && adduser spring spring
+USER spring:spring
+
+WORKDIR /app
+USER spring:spring
+EXPOSE 80
+
+COPY build/unpacked/dist/BOOT-INF/lib /app/lib
+COPY build/unpacked/dist/META-INF /app/META-INF
+COPY build/unpacked/dist/BOOT-INF/classes /app
+
+ENTRYPOINT ["java","-Xverify:none","-cp","./:lib/*","net.leloubil.clonecordserver.ClonecordServerApplication"]
