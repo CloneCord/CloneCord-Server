@@ -41,6 +41,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 //allow sign up url
                 .antMatchers(HttpMethod.POST, "/auth/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/info").permitAll()
                 // spring health endpoints
                 .antMatchers("/actuator/*").permitAll()
                 // swagger

@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import static net.leloubil.clonecordserver.security.SecurityConstants.*;
+import static net.leloubil.clonecordserver.security.SecurityConstants.HEADER_STRING;
+import static net.leloubil.clonecordserver.security.SecurityConstants.TOKEN_PREFIX;
 
 /**
  * Filter to ensure user is properly authenticated
@@ -56,9 +57,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
-        String userId = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
+        String userId = JWT.require(Algorithm.HMAC512(PRIVATE_KEY.getBytes()))
                 .build()
-                .verify(token.replace(TOKEN_PREFIX,""))
+                .verify(token.replace(TOKEN_PREFIX, ""))
                 .getSubject();
 
         if (userId == null){
