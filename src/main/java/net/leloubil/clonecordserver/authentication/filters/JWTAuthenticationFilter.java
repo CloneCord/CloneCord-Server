@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.leloubil.clonecordserver.data.LoginUser;
-import net.leloubil.clonecordserver.services.LoginUserService;
+import net.leloubil.clonecordserver.security.KeysData;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,11 +27,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private AuthenticationManager authenticationManager;
 
-    private LoginUserService loginUserService;
+    private KeysData keysData;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, LoginUserService loginUserService) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, KeysData keysData) {
         this.authenticationManager = authenticationManager;
-        this.loginUserService = loginUserService;
+        this.keysData = keysData;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withSubject(loginUser.getUuid().toString())
                 .withClaim("email", loginUser.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(Algorithm.HMAC512(PRIVATE_KEY.getBytes()));
+                .sign(Algorithm.HMAC512(keysData.getPrivateKey().getEncoded()));
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
     }

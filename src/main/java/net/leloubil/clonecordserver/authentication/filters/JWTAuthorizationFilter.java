@@ -3,6 +3,7 @@ package net.leloubil.clonecordserver.authentication.filters;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import net.leloubil.clonecordserver.data.LoginUser;
+import net.leloubil.clonecordserver.security.KeysData;
 import net.leloubil.clonecordserver.services.LoginUserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,9 +29,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final LoginUserService loginUserService;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, LoginUserService loginUserService) {
+    private final KeysData keysData;
+
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, LoginUserService loginUserService, KeysData keysData) {
         super(authenticationManager);
         this.loginUserService = loginUserService;
+        this.keysData = keysData;
     }
 
     @Override
@@ -57,7 +61,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
-        String userId = JWT.require(Algorithm.HMAC512(PRIVATE_KEY.getBytes()))
+        String userId = JWT.require(Algorithm.HMAC512(keysData.getPrivateKey().getEncoded()))
                 .build()
                 .verify(token.replace(TOKEN_PREFIX, ""))
                 .getSubject();

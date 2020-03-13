@@ -27,11 +27,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceImpl userDetailsService;
     private LoginUserService loginUserService;
+    private KeysData keysData;
     private PasswordEncoder passwordEncoder;
 
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, LoginUserService loginUserService, PasswordEncoder passwordEncoder) {
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, LoginUserService loginUserService, KeysData keysData, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.loginUserService = loginUserService;
+        this.keysData = keysData;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -55,14 +57,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .addFilter(getJWTAuthenticationFilter())
 
                 //Filter to make sure JWT is valid
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), loginUserService))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), loginUserService, keysData))
 
                 //No session since we use JWT
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     private JWTAuthenticationFilter getJWTAuthenticationFilter() throws Exception {
-        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), loginUserService);
+        JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), keysData);
         jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         return jwtAuthenticationFilter;
     }
