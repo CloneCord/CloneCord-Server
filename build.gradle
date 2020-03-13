@@ -61,4 +61,11 @@ task unzip(type: Copy){
     into outputDir
 }
 
+bootRun {
+    if ( project.hasProperty('jvmArgs') ) {
+        jvmArgs = (project.jvmArgs.split("\\s+") as List)
+
+    }
+}
+
 bootJar.finalizedBy tasks.unzip
